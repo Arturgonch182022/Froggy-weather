@@ -1,0 +1,23 @@
+.search-container {
+    max-width: 400px;
+    height: 45px;
+    background: white;
+    border-radius: 45px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 40px auto 0;
+    @media(max-width: 440px) {
+        margin-top: 16px;
+        margin-right: 20px;
+        margin-left: 20px;
+    }
+
+    .search-location-icon {
+        padding-left: 10px;
+    }
+
+    .search-label {
+        font-size: 20px;
+    }
+}
