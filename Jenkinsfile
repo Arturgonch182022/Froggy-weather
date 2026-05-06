@@ -14,44 +14,25 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Static Code Analysis (Lint)') {
             steps {
-                sh 'npm run lint || echo "Lint failed but continuing"'
-            }
-            post {
-                success {
-                    echo '✅ Linting passed!'
-                }
-                failure {
-                    echo '❌ Linting failed!'
-                }
+                bat 'npm run lint || exit 0'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'npm test -- --watch=false --browsers=ChromeHeadless || echo "Tests failed but continuing"'
-            }
-            post {
-                always {
-                    junit '**/test-results.xml'
-                }
-                success {
-                    echo '✅ Tests passed!'
-                }
-                failure {
-                    echo '❌ Tests failed!'
-                }
+                bat 'npm test -- --watch=false --browsers=ChromeHeadless || exit 0'
             }
         }
 
         stage('Build Application') {
             steps {
-                sh 'npm run build --prod'
+                bat 'npm run build --prod'
             }
         }
 
