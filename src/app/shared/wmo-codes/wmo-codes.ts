@@ -1,4 +1,4 @@
-const WEATHER_MAP: { [key: number]: string } = {
+const WEATHER_MAP: Record<number, string> = {
     0: 'sunny',
     1: 'mostly_sunny', 2: 'partly_cloudy', 3: 'cloudy',
     45: 'foggy', 48: 'foggy',

@@ -20,7 +20,7 @@ pipeline {
 
         stage('Static Code Analysis (Lint)') {
             steps {
-                sh 'npm run lint || echo "Lint failed but continuing"'
+                sh 'npm run lint || true'
             }
             post {
                 success {

@@ -8,5 +8,5 @@ import {FormsModule} from '@angular/forms';
   styleUrl: './search.scss',
 })
 export class Search {
-  @Input() cityLabel: string = 'Определение...';
+  @Input() cityLabel = 'Определение...';
 }
