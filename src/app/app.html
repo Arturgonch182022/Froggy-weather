@@ -8,6 +8,17 @@
             <span class="max">Максимум {{ Math.round(weatherData().daily.temperature_2m_max[0]) }}° </span>
             <span class="min">Минимум {{ Math.round(weatherData().daily.temperature_2m_min[0]) }} °</span>
         </div>
+        <div class="weather-status">
+            <img [src]="'/icons/light/' + weatherData().current.weather_code + '.svg'"
+                 class="weather-icon-small"
+                 alt="weather icon">
+            <span class="weather-desc">
+                {{ getWeatherDescription(weatherData().current.weather_code) }}
+            </span>
+            <span class="feels-like">
+                Ощущается как {{ Math.round(weatherData().current.apparent_temperature) }}°
+            </span>
+        </div>
         <div class="frog-container">
             <img [src]="froggyUrl()" alt="Froggy">
         </div>
@@ -35,6 +46,64 @@
                 </div>
             </div>
         }
+    </div>
+}
+
+@if (weatherData()) {
+    <div class="current-details">
+        <h3>Сейчас подробнее</h3>
+        <div class="details-grid">
+            <div class="detail-card">
+                <span class="detail-label">Влажность</span>
+                <span class="detail-value">{{ weatherData().current.relative_humidity_2m }}%</span>
+            </div>
+            <div class="detail-card">
+                <span class="detail-label">УФ-индекс</span>
+                <span class="detail-value">{{ weatherData().current.uv_index }}</span>
+            </div>
+            <div class="detail-card">
+                <span class="detail-label">Давление</span>
+                <span class="detail-value">{{ Math.round(weatherData().current.pressure_msl) }} мм рт.ст.</span>
+            </div>
+            <div class="detail-card">
+                <span class="detail-label">Ветер</span>
+                <span class="detail-value">{{ Math.round(weatherData().current.wind_speed_10m) }} км/ч</span>
+            </div>
+            <div class="detail-card">
+                <span class="detail-label">Направление</span>
+                <span class="detail-value">{{ getWindDirection(weatherData().current.wind_direction_10m) }}</span>
+            </div>
+        </div>
+    </div>
+}
+
+@if (weatherData() && weatherData().hourly) {
+    <div class="hourly-forecast">
+        <h3>Почасовой прогноз</h3>
+        <div class="hourly-scroll">
+            @for (hour of getNextHours(weatherData().hourly, 12); track $index) {
+                <div class="hourly-item">
+                    <div class="hour-time">{{ formatHour(hour.time) }}</div>
+                    <img [src]="'/icons/light/' + hour.weather_code + '.svg'" alt="weather icon">
+                    <div class="hour-temp">{{ Math.round(hour.temperature_2m) }}°</div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@if (weatherData()) {
+    <div class="astro-precip">
+        <div class="astro-card">
+            <h3>🌅 Восход / Закат</h3>
+            <p>{{ formatTime(weatherData().daily.sunrise[0]) }} — {{ formatTime(weatherData().daily.sunset[0]) }}</p>
+            <p>🌙 Долгота дня: {{ getDayLength(weatherData().daily.sunrise[0], weatherData().daily.sunset[0]) }}</p>
+        </div>
+        <div class="precip-card">
+            <h3>☔ Осадки сегодня</h3>
+            <p>{{ weatherData().daily.precipitation_sum[0] }} мм</p>
+            <p>⏱️ {{ weatherData().daily.precipitation_hours[0] }} часов с осадками</p>
+        </div>
     </div>
 }
 

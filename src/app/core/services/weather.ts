@@ -12,13 +12,43 @@ export class WeatherService {
     }
 
     getWeatherByCoords(lat: number, lon: number): Observable<any> {
-        const current = 'temperature_2m,weather_code,is_day,apparent_temperature,relative_humidity_2m';
-        const daily = 'temperature_2m_max,temperature_2m_min,weather_code,uv_index_max';
+        const current = [
+            'temperature_2m',
+            'weather_code',
+            'is_day',
+            'apparent_temperature',
+            'relative_humidity_2m',
+            'wind_speed_10m',
+            'wind_direction_10m',
+            'pressure_msl',
+            'uv_index'
+        ].join(',');
 
-        const params = `?latitude=${lat}&longitude=${lon}&current=${current}&daily=${daily}&forecast_days=10&timezone=auto`;
+        const daily = [
+            'temperature_2m_max',
+            'temperature_2m_min',
+            'weather_code',
+            'uv_index_max',
+            'sunrise',
+            'sunset',
+            'precipitation_sum',
+            'precipitation_hours',
+            'wind_speed_10m_max'
+        ].join(',');
+
+        const hourly = [
+            'temperature_2m',
+            'weather_code',
+            'is_day',
+            'relative_humidity_2m',
+            'wind_speed_10m'
+        ].join(',');
+
+        const params = `?latitude=${lat}&longitude=${lon}&current=${current}&daily=${daily}&hourly=${hourly}&forecast_days=10&timezone=auto`;
+
         return this.http.get(`${this.weatherUrl}${params}`).pipe(
             catchError(err => {
-                console.error('Ошибка Open-Meteo API. Проверьте параметры:', err);
+                console.error('Ошибка Open-Meteo API:', err);
                 return throwError(() => err);
             })
         );
