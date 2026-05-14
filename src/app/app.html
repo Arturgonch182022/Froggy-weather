@@ -1,4 +1,4 @@
-<app-search [cityLabel]="currentCity()"></app-search>
+<app-search [currentCityName]="currentCity()" (citySelected)="onCitySelected($event)"></app-search>
 
 @if (weatherData()) {
     <div class="weather-content">

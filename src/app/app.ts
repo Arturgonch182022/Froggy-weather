@@ -138,4 +138,8 @@ export class App implements OnInit {
         };
         return weatherMap[code] || 'Неизвестно';
     }
+
+    onCitySelected(city: { lat: number; lon: number; name: string }) {
+        this.getWeather(city.lat, city.lon, city.name);
+    }
 }

@@ -1,4 +1,57 @@
-<div class="search-container">
-    <img class="search-location-icon" src="icons/location-icon.png" width="16px" height="16px" alt="location-icon">
-    <span class="search-label">{{ cityLabel }}</span>
+<div class="search-wrapper">
+    <div class="search-container" (click)="toggleSearch()">
+        <img class="search-location-icon" src="icons/location-icon.png" width="16" height="16" alt="location-icon">
+        <span class="search-label">{{ currentCityName }}</span>
+    </div>
+
+    @if (isSearchOpen) {
+        <div class="search-panel">
+            <input type="text"
+                   class="search-input"
+                   placeholder="Поиск города..."
+                   [(ngModel)]="searchQuery"
+                   (input)="onSearchInput()"
+                   autofocus>
+
+            @if (suggestions.length > 0) {
+                <div class="suggestions-list">
+                    @for (s of suggestions; track $index) {
+                        <div class="suggestion-item">
+                            <div class="suggestion-info" (click)="selectSuggestion(s)">
+                                <span class="city-name">{{ s.name }}</span>
+                                <span class="country">{{ s.country }}</span>
+                            </div>
+                            <button class="save-btn" (click)="saveToFavorites(s, $event)">Сохранить</button>
+                        </div>
+                    }
+                </div>
+            }
+
+            <div class="current-location" (click)="selectCurrentLocation()">
+                <div class="section-title">📍 Текущее местоположение</div>
+                @if (currentLocation) {
+                    <div class="location-item">
+                        {{ currentLocation.name }}
+                    </div>
+                } @else {
+                    <div class="location-item">Определение...</div>
+                }
+            </div>
+
+            <div class="favorites-locations">
+                <div class="section-title">
+                    ⭐ Избранное
+                </div>
+                @for (fav of favorites; track $index) {
+                    <div class="location-item favorite-item" (click)="selectFavorite(fav)">
+                        <span>{{ fav.name }}</span>
+                        <button class="remove-btn" (click)="removeFavorite($event, fav)">✖</button>
+                    </div>
+                }
+                @if (favorites.length === 0) {
+                    <div class="empty-hint">Нет сохранённых городов. Нажмите «Сохранить» рядом с городом при поиске.</div>
+                }
+            </div>
+        </div>
+    }
 </div>
